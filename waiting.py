@@ -1,15 +1,27 @@
 import time
+
+
 class waiting:
     def __init__(self, name):
-        self.name=name
+        self.name = name
         made = False
-        while made==False:
-            with open (f'/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/{self.name}script/{self.name}-final.log','r') as outputF:
-                a =outputF.readlines()
-                if len(a)==0:
-                    print("log file is courpted")
-                line=a[-1].strip()
-                if line[0:33]=="Normal termination of Gaussian 16":
+        while made == False:
+            with open(
+                    f'/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/{self.name}script/{self.name}-final.log',
+                    'r') as outputF:
+                a = outputF.readlines()
+
+                if len(a) == 0:
+                    i =0
+                    while len(a) ==0:
+                        a= outputF.readlines()
+                        i = i+1
+                        print("log file is courpted, retrying")
+                        if i ==10:
+                            print("please retry, terminating program")
+                            break
+                line = a[-1].strip()
+                if line[0:33] == "Normal termination of Gaussian 16":
                     made = True
                     print("Now trasfering charges")
                 else:
