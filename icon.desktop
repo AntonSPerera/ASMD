@@ -1,5 +1,5 @@
 
-#[Desktop Entry]
+[Desktop Entry]
 Name=FastAtom
 Comment=automater
 Exec=bash -c "module load ccs/singularity; bash -c 'source Fast/conda && export BOSSdir=/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/boss && echo $BOSSdir && python /project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/Fast/gui.py'"
