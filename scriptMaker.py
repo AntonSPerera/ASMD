@@ -1,11 +1,14 @@
 import subprocess
+
+
 class FIdel:
     def __init__(self, name):
         self.name = name
         sumbit_name = self.name + 'Sumbit.sh'
-        self.idel = subprocess.run(['sinfo' ], shell=True, capture_output=True)
-        self.nodes = self.idel.stdout.decode().splitlines()
-        self.cacL_nodes = []                        #runs the sifo coamdn
+        idel = subprocess.run(['sinfo'], shell=True, capture_output=True)
+        nodes = idel.stdout.decode().splitlines()
+        self.cacL_nodes = []
+
         file = [
             "#!/bin/bash",
             "",
@@ -37,16 +40,17 @@ class FIdel:
             "g16 ept_p1_lpg.gjf > ept_p1_lpg.log"
         ]
 
-        for lines in self.nodes:
-            if 'CAC48M192_L' in lines or 'CAL48M192_L' in lines:
-                word= lines.split()
-                if 'idel' in word:                  
-                    self.cacL_nodes.append(lines)
+        for a in range(len(nodes)):
+            split = nodes[a].split()
+            if split[4].strip() == "idle" and split[0].strip() == "CAC48M192_L":
+                self.cacL_nodes.append(split[0])
+            elif split[4].strip() == "idle" and split[0].strip() == "CAL48M192_L":
+                self.cacL_nodes.append(split[0])
         try:
-            self.idel_node= self.cacL_nodes[0][0]
+            self.idel_node = self.cacL_nodes[0]
         except:
             print("No idel node, making sumbit file using CAC48M192_L")
-            self.idel_node= "CAC48M192_L"
+            self.idel_node = "CAC48M192_L"
             with open(f'{self.name}script/{sumbit_name}', 'a') as a:
                 file[9] = '#SBATCH --partition=' + self.idel_node + '			#Name of the queue'
                 file[27] = f'g16 /project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/{self.name}script/{self.name}-final.gjf > /project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/{self.name}script/{self.name}-final.log'
@@ -55,12 +59,12 @@ class FIdel:
 
             print("Submit file is made, now submititng")
         else:
-            self.idel_node= self.cacL_nodes[0][0]
-            with open (f'{self.name}script/{sumbit_name}', 'a') as a:
+            print("found Idel node")
+            self.idel_node = self.cacL_nodes[0]
+            with open(f'{self.name}script/{sumbit_name}', 'a') as a:
                 file[9] = '#SBATCH --partition=' + self.idel_node + '			#Name of the queue'
-                file[26] = f'g16 {self.name}.gjf > {self.name}.log'
+                file[27] = f'g16 /project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/{self.name}script/{self.name}-final.gjf > /project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/{self.name}script/{self.name}-final.log'
                 for iteams in file:
                     a.write(iteams + '\n')
 
-            print("Submit file made, now submititng")
-
+            print("Submit file is made, now submititng")
