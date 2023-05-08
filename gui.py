@@ -21,61 +21,78 @@ class GUI:
                                 bg="gray",
                                 fg="black", command=self.run)
 
-        self.entry = tk.Entry(self.window, fg="black", bg="white", width=50)
+        self.SoluteSmiles = tk.Entry(self.window, fg="black", bg="white", width=50)
 
-        self.Mname = tk.Entry(self.window, fg="black", bg="white", width=50)
+        self.SoluteName = tk.Entry(self.window, fg="black", bg="white", width=50)
 
-        self.label = tk.Label(self.window, text="Molecule name: ")
+        self.SolventSmiles = tk.Entry(self.window, fg="black", bg="white", width=50)
 
-        self.lable2 = tk.Label(self.window, text="SMILES code:")
+        self.Solname= tk.Entry(self.window, fg= "black", bg="white", width=50)
+
+        self.concentration = tk.Entry(self.window, fg= "black", bg="white", width=50)
+
+        self.labelSolute = tk.Label(self.window, text="Solute name: ".ljust(20))
+
+        self.labelSolvent= tk.Label(self.window, text="Solvent name: ".ljust(20))
+
+        self.labelConcentration= tk.Label(self.window, text ="Concentration: ".ljust(20))
+
+        self.lableSolventSmiles = tk.Label(self.window, text="Solvent SMILES code:".ljust(20))
+
+        self.labelSoluteSmiles = tk.Label(self.window, text= "Solute SMILES code: ".ljust(20))
 
         self.user = tk.Entry(self.window, fg="black", bg="white", width=50)
 
-        self.user_label = tk.Label(self.window, text="user id")
+        self.user_label = tk.Label(self.window, text="User ID")
 
         self.chargeV = tk.IntVar()
 
-        self.charge = tk.Checkbutton(self.window, text="Charge", variable=self.chargeV)
+        self.chargeCheck = tk.Checkbutton(self.window, text="Charge on the Solute", variable=self.chargeV)
 
-        self.cha = tk.Entry(self.window, fg="black", bg="white", width=50)
+        self.chargeEntry = tk.Entry(self.window, fg="black", bg="white", width=50)
 
-        self.dft = tk.IntVar()
+        self.dftV = tk.IntVar()
 
-        self.DFT = tk.Checkbutton(self.window, text="DFT", variable=self.dft)
+        self.DFTCheck = tk.Checkbutton(self.window, text="DFT", variable=self.dftV)
 
-        self.DFT.grid(row=6, column=0)
+        self.labelSolute.grid(row=0, column=0)
+        self.labelSoluteSmiles.grid(row=1, column=0)
+        self.labelSolvent.grid(row=2, column=0)
+        self.lableSolventSmiles.grid(row=3, column=0)
+        self.labelConcentration.grid(row=4, column=0)
+        self.user_label.grid(row=5, column=0)
+        self.chargeCheck.grid(row=6, column=0)
+        self.DFTCheck.grid(row=7, column=0)
 
-        self.entry.grid(row=0, column=1)
+        self.user.grid(row=5, column=1)
+        self.chargeEntry.grid(row=6, column=1)
+        self.concentration.grid(row=4, column=1)
+        self.Solname.grid(row=2, column=1)
+        self.SoluteSmiles.grid(row=1, column=1)
+        self.SolventSmiles.grid(row=3, column=1)
+        self.SoluteName.grid(row=0, column=1)
 
-        self.lable2.grid(row=0, column=0)
-
-        self.label.grid(row=2, column=0)
-
-        self.Mname.grid(row=2, column=1)
-
-        self.button.grid(row=7, column=0)
-
-        self.user.grid(row=4, column=1)
-
-        self.user_label.grid(row=4, column=0)
-
-        self.charge.grid(row=5, column=0)
-
-        self.cha.grid(row=5, column=1)
+        self.button.grid(row=10, column=0)
 
         self.window.mainloop()
 
     def run(self):
-        l.lig(self.entry.get(), self.Mname.get())
-        if self.dft.get()==1:
+        l.lig(self.SoluteSmiles.get(), "Solute_" +self.SoluteName.get())
+        l.lig(self.SolventSmiles.get(), "Solvent_" +self.Solname.get())
+        if self.dftV.get()==1:
             print("dft was selcted")
             self.script()
         else:
             print("dft not selcted")
     def script(self):
-        m.FIdel(self.Mname.get())
-        dft.sumbit(self.Mname.get(), self.user.get(), self.cha.get() )
-        wait.waiting(self.Mname.get())
-        transfer.trans(self.Mname.get())
+        m.FIdel("Solute_" +self.SoluteName.get())
+        dft.sumbit("Solute_" +self.SoluteName.get(), self.user.get(), self.chargeEntry.get() )
+        wait.waiting("Solute_" +self.SoluteName.get())
+        transfer.trans("Solute_" +self.SoluteName.get())
+
+        m.FIdel("Solvent_" +self.Solname.get())
+        dft.sumbit("Solvent_" + self.Solname.get(), self.user.get(), "0" )
+        wait.waiting("Solvent_" +self.Solname.get())
+        transfer.trans("Solvent_" +self.Solname.get())
 
 GUI()
