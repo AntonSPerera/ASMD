@@ -2,12 +2,13 @@ import time
 
 
 class waiting:
-    def __init__(self, name):
+    def __init__(self, name,dir):
+        self.dir = dir
         self.name = name
         made = False
         while made == False:
             with open(
-                    f'/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/{self.name}script/{self.name}-final.log',
+                    f'{self.dir}/{self.name}script/{self.name}-final.log',
                     'r') as outputF:
                 a = outputF.readlines()
 

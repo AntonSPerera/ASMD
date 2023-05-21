@@ -2,15 +2,16 @@ import os
 import subprocess
 import time
 class sumbit:
-    def __init__(self, mole, userid, multicharge):
+    def __init__(self, mole, userid, multicharge,dir):
+        self.dir = dir
         self.mol = mole
         self.user = userid
         self.multi = multicharge
-        l=[]
 
-        while os.path.isfile(f'/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/{self.mol}script/{self.mol}.gjf') == False:
+
+        while os.path.isfile(f'{self.dir}/{self.mol}script/{self.mol}.gjf') == False:
             time.sleep(1)
-        with open(f'/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/{self.mol}script/{self.mol}.gjf', 'r+') as g, open(f'/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/{self.mol}script/{self.mol}-final.gjf', 'a') as p:
+        with open(f'{self.dir}/{self.mol}script/{self.mol}.gjf', 'r+') as g, open(f'{self.dir}/{self.mol}script/{self.mol}-final.gjf', 'a') as p:
             a = g.readlines()
             b = 6
             for lines in a:
@@ -41,7 +42,7 @@ class sumbit:
                 p.write(c_lines)
             for i in range(b, len(l)):
                 p.write(l[i])
-        subprocess.run(['sbatch', f'/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/{self.mol}script/{self.mol}Sumbit.sh'], check=True)
+        subprocess.run(['sbatch', f'{self.dir}/{self.mol}script/{self.mol}Sumbit.sh'], check=True)
         a = subprocess.Popen(['squeue', '-u', f'{self.user}'], stdout=subprocess.PIPE)
         while True:
             output = a.communicate()[0].decode()
@@ -51,7 +52,7 @@ class sumbit:
                 break
     
         print("dft is successfully submitted")
-        while os.path.isfile(f'/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/{self.mol}script/{self.mol}-final.log') == False:
+        while os.path.isfile(f'{self.dir}/{self.mol}script/{self.mol}-final.log') == False:
             time.sleep(1)
        	print("log is made, waiting for g16")
 

@@ -1,9 +1,10 @@
 import subprocess
 class trans:
-    def __init__(self,name):
+    def __init__(self,name,dir):
         self.name=name
+        self.dir= dir
         chagreMatrix=[]
-        with open (f'/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/{self.name}script/{self.name}-final.log','r') as log, open(f'/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/{self.name}/{self.name}.gmx.itp','r') as gmx, open(f'/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/{self.name}script/{self.name}.itp','a') as itp:
+        with open (f'{self.dir}/{self.name}script/{self.name}-final.log','r') as log, open(f'{self.dir}/{self.name}/{self.name}.gmx.itp','r') as gmx, open(f'{self.dir}/{self.name}script/{self.name}.itp','a') as itp:
             lines= log.readlines()
             gmx_lines= gmx.readlines()
             if len(gmx_lines) ==0:
