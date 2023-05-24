@@ -55,6 +55,21 @@ class GUI:
 
         self.labelSolvent= tk.Label(self.window, text="Solvent name (3 letters): ".ljust(20))
 
+
+        self.solventname2 = tk.Entry(self.window, fg="black", bg="white", width=50)
+        self.solutename2 = tk.Entry(self.window, fg="black", bg="white", width=50)
+        self.solvent2Lable = tk.Label(self.window, text="Solvent2 name (3 letters): ")
+        self.solute2Lable = tk.Label(self.window, text="Solute2 name (3 letters): ")
+        self.solventsmiles2 = tk.Entry(self.window, fg="black", bg="white", width=50)
+        self.solutesmiles2 = tk.Entry(self.window, fg="black", bg="white", width=50)
+        self.solvent2SmilesLable = tk.Label(self.window, text="Solvent2 Smiles: ")
+        self.solute2SmilesLable = tk.Label(self.window, text="Solute2 Smiles: ")
+
+        self.Density2= tk.Entry(self.window, fg="black", bg="white", width=50)
+        self.Density2label=tk.Label(self.window, text ="Density of solvent2(M): ".ljust(20))
+        self.concentration2=tk.Entry(self.window, fg="black", bg="white", width=50)
+        self.concentration2label=tk.Label(self.window, text ="Concentration2(M): ".ljust(20))
+
         self.labelConcentration= tk.Label(self.window, text ="Concentration(M): ".ljust(20))
 
         self.lableSolventSmiles = tk.Label(self.window, text="Solvent SMILES code:".ljust(20))
@@ -66,8 +81,12 @@ class GUI:
         self.user_label = tk.Label(self.window, text="User ID")
 
         self.chargeV = tk.IntVar()
+        self.chargeV2 = tk.IntVar()
 
         self.chargeCheck = tk.Checkbutton(self.window, text="Charge on the Solute", variable=self.chargeV)
+
+        self.chargeCheck2 = tk.Checkbutton(self.window, text="Charge on the Solute2", variable=self.chargeV2)
+        self.chargeEntry2 = tk.Entry(self.window, fg="black", bg="white", width=50)
 
         self.chargeEntry = tk.Entry(self.window, fg="black", bg="white", width=50)
 
@@ -76,42 +95,77 @@ class GUI:
         self.DFTCheck = tk.Checkbutton(self.window, text="DFT", variable=self.dftV)
 
         self.labelSolute.grid(row=0, column=0)
-        self.labelSoluteSmiles.grid(row=1, column=0)
-        self.labelSolvent.grid(row=2, column=0)
-        self.lableSolventSmiles.grid(row=3, column=0)
-        self.labelConcentration.grid(row=4, column=0)
-        self.user_label.grid(row=5, column=0)
-        self.chargeCheck.grid(row=12, column=0)
-        self.DFTCheck.grid(row=13, column=0)
-        self.labelDensity.grid(row=6, column=0)
-
-        self.user.grid(row=5, column=1)
-        self.chargeEntry.grid(row=12, column=1)
-        self.concentration.grid(row=4, column=1)
-        self.Solname.grid(row=2, column=1)
-        self.SoluteSmiles.grid(row=1, column=1)
-        self.SolventSmiles.grid(row=3, column=1)
         self.SoluteName.grid(row=0, column=1)
-        self.Density.grid(row=6, column= 1)
 
-        self.xdim.grid(row=9, column=1)
-        self.ydim.grid(row=10, column=1)
-        self.zdim.grid(row=11, column=1)
+        self.labelSoluteSmiles.grid(row=1, column=0)
+        self.SoluteSmiles.grid(row=1, column=1)
+
+        self.labelSolvent.grid(row=2, column=0)
+        self.Solname.grid(row=2, column=1)
+
+        self.lableSolventSmiles.grid(row=3, column=0)
+        self.SolventSmiles.grid(row=3, column=1)
+
+        self.labelConcentration.grid(row=4, column=0)
+        self.concentration.grid(row=4, column=1)
+
+        self.user_label.grid(row=5, column=0)
+        self.user.grid(row=5, column=1)
+
+        self.labelDensity.grid(row=6, column=0)
+        self.Density.grid(row=6, column=1)
 
         self.xdimLabel.grid(row=9, column=0)
+        self.xdim.grid(row=9, column=1)
+
         self.ydimLabel.grid(row=10, column=0)
+        self.ydim.grid(row=10, column=1)
+
         self.zdimLabel.grid(row=11, column=0)
-        self.button.grid(row=15, column=0)
+        self.zdim.grid(row=11, column=1)
 
-        self.email.grid(row=14, column=1)
-        self.emailLable.grid(row=14, column=0)
+        self.chargeCheck2.grid(row=12, column=0)
+        self.chargeEntry2.grid(row=12, column=1)
 
+        self.solvent2Lable.grid(row=13, column=0)
+        self.solventname2.grid(row=13, column=1)
+
+        self.solvent2SmilesLable.grid(row=14, column=0)
+        self.solventsmiles2.grid(row=14, column=1)
+
+        self.solute2Lable.grid(row=15, column=0)
+        self.solutename2.grid(row=15, column=1)
+
+        self.solute2SmilesLable.grid(row=16, column=0)
+        self.solutesmiles2.grid(row=16, column=1)
+
+        self.Density2.grid(row=17, column=1)
+        self.Density2label.grid(row=17, column=0)
+
+        self.concentration2.grid(row=18, column=1)
+        self.concentration2label.grid(row=18, column=0)
+
+        self.chargeCheck.grid(row=19, column=0)
+        self.chargeEntry.grid(row=19, column=1)
+
+        self.emailLable.grid(row=20, column=0)
+        self.email.grid(row=20, column=1)
+
+        self.DFTCheck.grid(row=21, column=0)
+
+        self.button.grid(row=22, column=0)
 
         self.window.mainloop()
 
     def run(self):
         l.lig(self.SoluteSmiles.get(), self.SoluteName.get()[:3] +"_Solute", self.curentDirectory)
         l.lig(self.SolventSmiles.get(), self.Solname.get()[:3] +"_Solvent", self.curentDirectory)
+
+        if len(self.solutesmiles2.get()) != 0:
+            l.lig(self.solutesmiles2.get(), self.solutename2.get()[:3] + "_Solute2", self.curentDirectory)
+        if len(self.solventsmiles2.get()) != 0:
+            l.lig(self.solventsmiles2.get(), self.solventname2.get()[:3] + "_Solvent2", self.curentDirectory)
+
         if self.dftV.get()==1:
             print("dft was selcted")
             self.script()
@@ -125,14 +179,28 @@ class GUI:
         transfer.trans(self.SoluteName.get()[:3]+"_Solute", self.curentDirectory)
 
         m.FIdel(self.Solname.get()[:3] +"_Solvent", self.email.get(), self.curentDirectory)
-        dft.sumbit(self.Solname.get()[:3] +"_Solvent", self.user.get(), self.chargeEntry.get(), "0", self.curentDirectory )
+        dft.sumbit(self.Solname.get()[:3] +"_Solvent", self.user.get(), "0", self.curentDirectory)
         wait.waiting(self.Solname.get()[:3] +"_Solvent", self.curentDirectory)
         transfer.trans(self.Solname.get()[:3] +"_Solvent", self.curentDirectory)
+
+        if len(self.solutesmiles2.get()) != 0:
+            m.FIdel(self.solutename2.get()[:3] + "_Solute2", self.email.get(), self.curentDirectory)
+            dft.sumbit(self.solutename2.get()[:3] + "_Solute2", self.user.get(), self.chargeEntry2.get(),
+                       self.curentDirectory)
+            wait.waiting(self.solutename2.get()[:3] + "_Solute2", self.curentDirectory)
+            transfer.trans(self.solutename2.get()[:3] + "_Solute2", self.curentDirectory)
+
+        if len(self.solventsmiles2.get()) != 0:
+            m.FIdel(self.solventname2.get()[:3] + "_Solvent2", self.email.get(), self.curentDirectory)
+            dft.sumbit(self.solventname2.get()[:3] + "_Solvent2", self.user.get(), "0",
+                       self.curentDirectory)
+            wait.waiting(self.solventname2.get()[:3] + "_Solvent2", self.curentDirectory)
+            transfer.trans(self.solventname2.get()[:3] + "_Solvent2", self.curentDirectory)
+
         self.pack()
     def pack(self):
-        pack.Solvate(self.Solname.get()[:3], self.SoluteName.get()[:3], self.concentration.get(), self.Density.get(), self.xdim.get(),self.ydim.get(),self.zdim.get(), self.curentDirectory )
-        gro.gro(self.Solname.get()[:3], self.SoluteName.get()[:3], self.curentDirectory, self.xdim.get(),self.ydim.get(),self.zdim.get())
+        pack.Solvate(self.Solname.get()[:3], self.SoluteName.get()[:3], self.concentration.get(), self.Density.get(),self.solutename2.get()[:3], self.solventname2.get()[:3], self.concentration2.get(), self.Density2.get(), self.xdim.get(),self.ydim.get(),self.zdim.get(), self.curentDirectory )
+        gro.gro(self.Solname.get()[:3], self.SoluteName.get()[:3],self.solventname2.get()[:3], self.solutename2.get()[:3], self.curentDirectory, self.xdim.get(),self.ydim.get(),self.zdim.get())
 
 
 GUI()
-
