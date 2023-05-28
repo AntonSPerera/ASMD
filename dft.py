@@ -2,7 +2,7 @@ import os
 import subprocess
 import time
 class sumbit:
-    def __init__(self, mole, userid, multicharge,dir):
+    def __init__(self, mole, userid, multicharge, dir):
         self.dir = dir
         self.mol = mole
         self.user = userid

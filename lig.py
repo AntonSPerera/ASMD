@@ -30,4 +30,3 @@ class lig:
         subprocess.run([comand2], shell=True)
         subprocess.run([comand3], shell=True)
 
-
