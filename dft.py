@@ -14,6 +14,7 @@ class sumbit:
         with open(f'{self.dir}/{self.mol}script/{self.mol}.gjf', 'r+') as g, open(f'{self.dir}/{self.mol}script/{self.mol}-final.gjf', 'a') as p:
             a = g.readlines()
             b = 6
+            l=[]
             for lines in a:
                 l.append(lines)
 
