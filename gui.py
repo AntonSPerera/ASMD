@@ -16,7 +16,7 @@ class GUI:
 
         self.window.title('FastAtom')
 
-        self.window.geometry('700x750')
+        self.window.geometry('850x650')
 
         self.button = tk.Button(self.window,
                                 text="Submit",
@@ -53,7 +53,7 @@ class GUI:
 
         self.Concentrations = tk.Entry(self.window, fg="black", bg="white", width=50)
 
-        self.labelSolute = tk.Label(self.window, text="Solute name (3 letters): ".ljust(20))
+        self.labelSolute = tk.Label(self.window, text="Solute names (3 letters, if using multiple, seprate with commas): ".ljust(20))
 
         self.labelSolvent= tk.Label(self.window, text="Solvent name (3 letters): ".ljust(20))
 
@@ -71,11 +71,11 @@ class GUI:
         self.Density2label=tk.Label(self.window, text ="Density of solvent2(M): ".ljust(20))
 
 
-        self.labelConcentration= tk.Label(self.window, text ="Concentration(M) of the Solutes: ".ljust(20))
+        self.labelConcentration= tk.Label(self.window, text ="Concentration(M) of the Solutes, seprate with commas: ".ljust(20))
 
         self.lableSolventSmiles = tk.Label(self.window, text="Solvent SMILES code:".ljust(20))
 
-        self.labelSoluteSmiles = tk.Label(self.window, text= "Solute SMILES code: ".ljust(20))
+        self.labelSoluteSmiles = tk.Label(self.window, text= "Solute SMILES code(separate with commas): ".ljust(20))
 
         self.user = tk.Entry(self.window, fg="black", bg="white", width=50)
 
@@ -239,7 +239,7 @@ class GUI:
             wait.waiting(self.solventname2.get()[:3] + "_Solvent2", self.curentDirectory)
             self.update_progress("Transfering charges for Solvetn 2",0)
             transfer.trans(self.solventname2.get()[:3] + "_Solvent2", self.curentDirectory)
-            self.update_progress("charge transfer done for Solvent 2, starting the DFT for the solutes",25)
+            self.update_progress("charge transfer done for Solvent 2, now using packmol",25)
 
         self.pack(SoluteM)
     def pack(self, solutename):
