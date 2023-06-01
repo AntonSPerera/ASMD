@@ -248,7 +248,9 @@ class GUI:
         pack.Solvate(self.Solname.get()[:3], solutes, SoluteConetrationMatrix, self.Density.get(), self.solventname2.get()[:3], self.Density2.get(), self.xdim.get(), self.ydim.get(), self.zdim.get(), self.curentDirectory, self.ratio.get())
         self.update_progress("Packmol done, creating gro file and cleaing up",10)
         gro.gro(self.Solname.get()[:3], solutes,self.solventname2.get()[:3], self.curentDirectory, self.xdim.get(),self.ydim.get(),self.zdim.get())
-        self.update_progress("Ready to start simulation", 100)
+        self.update_progress("starting simulation",0)
+        subprocess.run(f'source {self.curentDirectory}/Fast/ASMD && source {self.curentDirectory}/Fast/gromacs_gpu.sh && python {self.curentDirectory}/Fast/ASMD_1.py', shell=True)
+        self.update_progress("simulation done", 100)
         self.stop()
 
 

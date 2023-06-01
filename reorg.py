@@ -26,5 +26,6 @@ class reorg:
             for k in range(atomtype_lastline-atomtype+1):
                 type.writelines(orginal[atomtype+k])
 
-
+       
+       
 
