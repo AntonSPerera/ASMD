@@ -4,14 +4,16 @@ import time
 from rdkit import Chem
 from rdkit.Chem import AllChem
 class lig:
-    def __init__(self, sm, m,dir):
+    def __init__(self, sm, m,charge,dir):
         self.dir = dir
         self.smiles = sm
+        print(self.smiles)
         self.mol = m
+        self.charge=int(charge)
         subprocess.run([f'mkdir {self.dir}/{self.mol}script'], shell=True)
         conda_activate = f"source {self.dir}/miniconda3/bin/activate && conda activate ligpg"
         export_bossdir = f"export BOSSdir={self.dir}/boss"
-        ligpargen_cmd = f"ligpargen -s '{self.smiles}' -n {self.mol} -p {self.mol} -r {self.mol} -c 0 -o 0 -cgen CM1A"
+        ligpargen_cmd = f"ligpargen -s '{self.smiles}' -n {self.mol} -p {self.mol} -r {self.mol} -c {self.charge} -o 0 -cgen CM1A"
         singularity_container = f"{self.dir}/Fast/f.sif"
 
         cmd = ["singularity", "exec", singularity_container, "bash", "-c",
@@ -29,4 +31,3 @@ class lig:
         comand3 = f'obabel -igro {self.dir}/ {self.mol}/{self.mol}.gmx.gro -opdb -O {self.mol}/{self.mol}.pdb '
         subprocess.run([comand2], shell=True)
         subprocess.run([comand3], shell=True)
-

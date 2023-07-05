@@ -8,6 +8,7 @@ import chargeTrasnfer as transfer
 import packmol as pack
 import make_gro as gro
 import subprocess
+import ASMD_1 as ASMD
 
 
 class GUI:
@@ -68,7 +69,7 @@ class GUI:
 
 
         self.Density2= tk.Entry(self.window, fg="black", bg="white", width=50)
-        self.Density2label=tk.Label(self.window, text ="Density of solvent2(M): ".ljust(20))
+        self.Density2label=tk.Label(self.window, text ="Density of Solvent2(M): ".ljust(20))
 
 
         self.labelConcentration= tk.Label(self.window, text ="Concentration(M) of the Solutes, seprate with commas: ".ljust(20))
@@ -85,8 +86,10 @@ class GUI:
         self.chargeV = tk.IntVar()
 
         self.ratio= tk.Entry(self.window, fg="black", bg="white", width=50)
-        self.rationlabel= tk.Label(self.window, text="Ratio of the solvent1/solvent2")
-
+        self.rationlabel= tk.Label(self.window, text="Ratio of the Solvent1/Solvent2")
+        self.molarMass= tk.Entry(self.window, fg="black", bg="white", width=50)
+        self.molarlabel= tk.Label(self.window, text="Molarmass of Solvents")
+    
 
         self.chargeCheck = tk.Checkbutton(self.window, text="Charge on the Solutes", variable=self.chargeV)
         self.chargeMatrix = tk.Entry(self.window, fg="black", bg="white", width=50)
@@ -153,12 +156,16 @@ class GUI:
         self.emailLable.grid(row=20, column=0)
         self.email.grid(row=20, column=1)
 
-        self.DFTCheck.grid(row=21, column=0)
+        self.molarMass.grid(row=21, column=1)
+        self.molarlabel.grid(row=21, column=0)
+    
 
-        self.button.grid(row=22, column=0)
+        self.DFTCheck.grid(row=22, column=0)
 
-        self.progressBar.grid(row=23, column=1)
-        self.progresslabel .grid(row=23, column=0)
+        self.button.grid(row=23, column=0)
+
+        self.progressBar.grid(row=24, column=1)
+        self.progresslabel .grid(row=24, column=0)
 
 
         self.step.grid(row=26, column=1)
@@ -181,17 +188,18 @@ class GUI:
         
         SoluteMatrix = self.SoluteName.get().split(",")
         SoluteSmilesMatrix = self.SoluteSmiles.get().split(",")
+        charge=self.chargeMatrix.get().strip(",")
 
         for I in range(len(SoluteMatrix)):
             self.update_progress(f"Starting LigPG for solute {I+1}", 0)
-            l.lig(SoluteSmilesMatrix[I].strip()[:3], SoluteMatrix[I].strip()[:3] + f"_Solute{I+1}", self.curentDirectory)
+            l.lig(SoluteSmilesMatrix[I], SoluteMatrix[I].strip()[:3] + f"_Solute{I+1}", charge[i],self.curentDirectory)
 
         self.update_progress(f"Starting LigPG for solvent1", 0)
-        l.lig(self.SolventSmiles.get(), self.Solname.get()[:3] +"_Solvent", self.curentDirectory)
+        l.lig(self.SolventSmiles.get(), self.Solname.get()[:3] +"_Solvent",0, self.curentDirectory)
 
         if len(self.solventsmiles2.get()) != 0:
             self.update_progress(f"Starting LigPG for solvent2", 0)
-            l.lig(self.solventsmiles2.get(), self.solventname2.get()[:3] + "_Solvent2", self.curentDirectory)
+            l.lig(self.solventsmiles2.get(), self.solventname2.get()[:3] + "_Solvent2", 0,self.curentDirectory)
 
         if self.dftV.get()==1:
             print("dft was selcted")
@@ -249,11 +257,34 @@ class GUI:
         self.update_progress("Packmol done, creating gro file and cleaing up",10)
         gro.gro(self.Solname.get()[:3], solutes,self.solventname2.get()[:3], self.curentDirectory, self.xdim.get(),self.ydim.get(),self.zdim.get())
         self.update_progress("starting simulation",0)
-        subprocess.run(f'source {self.curentDirectory}/Fast/ASMD && source {self.curentDirectory}/Fast/gromacs_gpu.sh && python {self.curentDirectory}/Fast/ASMD_1.py', shell=True)
-        self.update_progress("simulation done", 100)
+        runer=ASMD.ASMD()
+        a=runer.EnergyMin()
+        self.update_progress(f"Energy Minimization done, exited wiht:{a}",0)
+        b=runer.NVT()
+        self.update_progress(f"NVT step done exited with:{b}",0)
+        c=runer.NPT()
+        self.update_progress(f"NPT done exited with:{c}",0)
+        Denisty=runer.calculate_density()
+        self.update_progress(f"Densities: {Denisty}",0)
+        d=runer.check_density_accuracy( float(self.Density.get())* float(self.molarMass.get()),Denisty)
+        #d=runer.check_density_accuracy( 0.33,Denisty)
+        self.update_progress(f"checking density, exited with:{d}",0)
+        e=runer.correct()
+        self.update_progress(f"PBC correction complete: e",0)
+        f=runer.index_file()
+        self.update_progress(f"Index file made exited with:{f}",0)
+        g=runer.msd_mkaer()
+        self.update_progress(f"MSD file made exited wiht:{g}",0)
+        residues=runer.extract_residues_from_itp()
+        self.update_progress(f"Residue names: {residues}",0)
+        cord=runer.rdf(residues,5)
+        self.update_progress(f"cordiantion numer{cord}",0)
+        h=runer.cordination_number(cord)
+        self.update_progress(f"Program finished exited wiht:{h} ", 100)
         self.stop()
 
 
 GUI()
+
 
 

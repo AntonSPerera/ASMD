@@ -1,4 +1,5 @@
 import subprocess
+import os
 
 
 class toopol:
@@ -12,6 +13,27 @@ class toopol:
         self.y = float(y)
         self.z = float(z)
         command2 = f'mkdir {self.dir}/InputGrofiles'
+        if os.path.isdir(f'{self.dir}/InputGrofiles') == True:
+            folder_number=0
+            if os.path.isdir(f'{self.dir}/Old_InputGrofiles_Output')==False:
+                make_old= f'mkdir {self.dir}/Old_InputGrofiles_Output'
+                subprocess.run(make_old, shell=True, check=True)
+            while True:
+                if os.path.isdir(f'{self.dir}/Old_InputGrofiles_Output/InputGrofiles{folder_number+1}'):
+                    folder_number +=1
+                else:
+                    move = f'mv {self.dir}/InputGrofiles {self.dir}/Old_InputGrofiles_Output/InputGrofiles{folder_number+1}'
+                    subprocess.run(move, shell=True, check=True)
+                    break
+        if os.path.isdir(f'{self.dir}/Output') == True:
+            folder_number = 0
+            while True:
+                if os.path.isdir(f'{self.dir}/Old_InputGrofiles_Output/Output{folder_number + 1}'):
+                    folder_number += 1
+                else:
+                    move = f'mv {self.dir}/Output {self.dir}/Old_InputGrofiles_Output/Output{folder_number + 1}'
+                    subprocess.run(move, shell=True, check=True)
+                    break
         subprocess.run(command2, shell=True, check=True)
         cmd = f"touch {self.dir}/InputGrofiles/topol.top && touch InputGrofiles/nmol.itp"
         subprocess.run(cmd, shell=True, check=True)
@@ -56,4 +78,7 @@ class toopol:
 
             for li in linesNmol:
                 nmol.write(li + "\n")
+
+
+
 

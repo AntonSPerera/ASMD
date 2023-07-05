@@ -1,4 +1,3 @@
-module purge
 module load gnu/5.4.0
 module load openmpi/1.10.7
 module load ccs/gromacs/skylake-gpu/2019

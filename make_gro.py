@@ -11,7 +11,7 @@ class gro:
         self.solvent = solvent
         self.solute = solute
         self.solvent2 = solvent2
-        command = f'source {self.dir}/Fast/gromacs_load.sh && gmx_mpi editconf -f {self.dir}/Packmol/Mixture.pdb -box {self.x} {self.y} {self.z} -o Packmol/solvated.gro'
+        command = f'gmx_mpi editconf -f {self.dir}/Packmol/Mixture.pdb -box {self.x} {self.y} {self.z} -o Packmol/solvated.gro'
         subprocess.run(command, shell=True, check=True)
         print("gro file made")
 

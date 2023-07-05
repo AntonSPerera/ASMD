@@ -18,13 +18,13 @@ class Solvate:
             self.ratio=float(ratio)
         except:
             self.ratio = 1
-        self.x = float(x)
-        self.y= float(y)
-        self.z = float(z)
+        self.x = 10*float(x)
+        self.y= 10*float(y)
+        self.z = 10*float(z)
 
-        self.numberSolvent = int(self.den * (6.4e-20)* 6.02214e23*((self.x * self.y * self.z)/(40*40*40)))
+        self.numberSolvent = int(self.den * (6.4e-20)* 6.02214e23*(((self.x/10) * (self.y/10) * (self.z/10))/(40*40*40)))
         try:
-            self.numberSolvent2 = int(self.den2 * (6.4e-20) * 6.02214e23 * ((self.x * self.y * self.z) / (40 * 40 * 40))* self.ratio)
+            self.numberSolvent2 = int(self.den2 * (6.4e-20)* 6.02214e23*(((self.x/10) * (self.y/10) * (self.z/10))/(40*40*40))* self.ratio)
         except:
             self.numberSolvent2 = 0
 
@@ -39,7 +39,7 @@ class Solvate:
                   ]
             for i in range( len(con)):
                 self.mol = int(
-                    float(con[i].strip()) * (6.4e-20) * 6.02214e23 * ((self.x * self.y * self.z) / (40 * 40 * 40)))
+                    float(con[i].strip()) * (6.4e-20)* 6.02214e23*(((self.x/10) * (self.y/10) * (self.z/10))/(40*40*40)))
                 info_all.append(" ")
                 info_all.append(f"structure {solute[i].strip()[:3]}_Solute{i+1}/{solute[i].strip()[:3]}_Solute{i+1}.pdb")
                 info_all.append( f"  number {self.mol}")
@@ -53,7 +53,7 @@ class Solvate:
 
             for i in range( len(con)):
                 self.molnum = int(
-                    float(con[i].strip()) * (6.4e-20) * 6.02214e23 * ((self.x * self.y * self.z) / (40 * 40 * 40)))
+                    float(con[i].strip()) * (6.4e-20)* 6.02214e23*(((self.x/10) * (self.y/10) * (self.z/10))/(40*40*40)))
                 info_none.append(" ")
                 info_none.append(f"structure {solute[i].strip()[:3]}_Solute{i+1}/{solute[i].strip()[:3]}_Solute{i+1}.pdb")
                 info_none.append( f"  number {self.molnum}")
@@ -79,7 +79,7 @@ class Solvate:
         subprocess.Popen(cmd).wait()
         self.to()
     def to(self,):
-        top.toopol(self.solvent, self.numberSolvent, self.solvent2, self.numberSolvent2, self.solutes, self.con, self.dir, self.x, self.y, self.z)
+        top.toopol(self.solvent, self.numberSolvent, self.solvent2, self.numberSolvent2, self.solutes, self.con, self.dir, self.x/10, self.y/10, self.z/10)
 
 
 
